@@ -83,3 +83,19 @@ Per-workspace sequential queues match the user's exact Q7 answer and keep extern
 from interleaving unsafely, while concurrency across workspaces preserves throughput. Putting this in
 its own stage keeps the Dispatcher a pure "choose runner" function and the Bus a pure fan-out — each
 component has one job.
+
+---
+
+> **REVISION — Appended from FRAME documentation (Rev A · 2026-08-07).**
+> *Non-destructive: all prior text in this document is unchanged and remains canonical. This block augments it with material drawn from the FRAME spec set (same design, independent authorship). Status: Appended.*
+
+### R.A.8 — Priority bands & concurrency caps (from FRAME Ch.1 / Ch.4)
+
+FRAME assigns explicit priority levels (Tessera's §4.1 per-workspace queue can adopt these as an ordering key):
+
+1. `0` Emergency / cancellation handlers
+2. `1` Direct CLI / user action commands
+3. `2` File-modification hooks
+4. `3` Background asset indexing / maintenance
+
+The worker pool caps concurrent subprocesses to prevent CPU saturation during cascading events. Priority sorts by `(priority_level, timestamp)`; the recursion guard (Part VII R.A.7) aborts deep chains.

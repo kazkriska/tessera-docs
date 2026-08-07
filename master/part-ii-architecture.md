@@ -130,3 +130,41 @@ The pipeline is deliberately linear and single-responsibility so each stage can 
 reimplemented (e.g. a Rust runtime) without disturbing the Ticket format or the manifest contract.
 The explicit Scheduler stage exists because omitting it caused scheduling logic to accumulate in the
 Dispatcher during design review — a known anti-pattern the user agreed to avoid.
+
+---
+
+> **REVISION — Appended from FRAME documentation (Rev A · 2026-08-07).**
+> *Non-destructive: all prior text in this document is unchanged and remains canonical. This block augments it with material drawn from the FRAME spec set (same design, independent authorship). Status: Appended.*
+
+### R.A.2 — Layer-topology correspondence & end-to-end sequence
+
+FRAME decomposes the same engine into six single-responsibility layers. The mapping to Tessera's pipeline (Part II §4.1) is direct:
+
+| FRAME layer | Tessera stage |
+| --- | --- |
+| 1. Filesystem Workspace | TicketRepository (source of truth) |
+| 2. Discovery & Registry | Discovery → Registry |
+| 3. Event Engine & File Watcher | Watcher → Event Bus |
+| 4. Queue & Scheduler | Scheduler |
+| 5. Dispatcher & Sandboxing | Dispatcher (+ Permission check) |
+| 6. Polyglot Execution Runners | Executor / Runners |
+
+FRAME also documents the end-to-end flow as a sequence (external write → IN_MODIFY → translate → bus → scheduler → runner → state/log), consistent with Part II §11. Illustrative mermaid:
+
+```mermaid
+sequenceDiagram
+    participant Ext as External Script / Agent
+    participant Disk as Ticket Disk (metadata.json)
+    participant W as FS Watcher & Translator
+    participant Bus as Event Bus
+    participant S as Scheduler
+    participant R as Polyglot Runner
+    participant Log as activity.jsonl
+    Ext->>Disk: Atomically writes updated metadata.json
+    W->>W: Debounce + match watch patterns
+    W->>Bus: Emits domain event (e.g. metadata.updated)
+    Bus->>S: Enqueue hook handler
+    S->>R: Spawn runner with event payload on STDIN
+    R->>Disk: Mutate state.json / assets
+    R->>Log: Append JSONL entry
+```

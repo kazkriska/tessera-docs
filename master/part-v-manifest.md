@@ -159,3 +159,28 @@ executable descriptor avoids special-casing hooks vs actions. Forbidding YAML an
 logic keeps the manifest *predictable and validatable* — the entire point of "explicit over
 convention." YAML (not TOML) was chosen because the manifest is hierarchical behavior (hooks,
 actions, lifecycle, permissions), where TOML becomes awkward (user agreed after comparison).
+
+---
+
+> **REVISION — Appended from FRAME documentation (Rev A · 2026-08-07).**
+> *Non-destructive: all prior text in this document is unchanged and remains canonical. This block augments it with material drawn from the FRAME spec set (same design, independent authorship). Status: Appended.*
+
+### R.A.5 — Low-level watch mapping, exports, circular-watch guard (from FRAME Ch.3)
+
+Tessera Part V declares `hooks` keyed by *domain* event name but does not yet specify how low-level file changes map to those names. FRAME places that mapping in the manifest under `spec.watch`:
+
+```yaml
+watch:
+  - path: "metadata.json"
+    events: [modify]
+    trigger: metadata_updated
+  - path: "task/assets/**"
+    events: [create, modify]
+    trigger: asset_indexed
+```
+
+The runtime translates matched low-level events into the named `trigger`, which then routes to `hooks:` as today. This fills the gap noted in Part II §4.2 (Watcher → domain translation) at the manifest level.
+
+**Exported variables (`exports:`).** A Ticket may declare output variables it produces (e.g. `task.status`, `task.report_path`) so peers/agents can introspect results without reading scripts.
+
+**Circular-watch guard.** A `watch` rule MUST NOT watch `state.json`/`activity.jsonl` if its target hook writes those files, preventing immediate self-recursion.

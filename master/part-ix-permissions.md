@@ -98,3 +98,23 @@ Least-privilege-by-default with explicit escalation keeps Tickets portable and s
 from elsewhere won't silently gain network or filesystem power. Gating at execution (not at edit) time
 preserves the "filesystem is source of truth / user-editable" principle while still protecting the
 host. The model is intentionally data-shaped so future sandboxing can be layered without redesign.
+
+---
+
+> **REVISION — Appended from FRAME documentation (Rev A · 2026-08-07).**
+> *Non-destructive: all prior text in this document is unchanged and remains canonical. This block augments it with material drawn from the FRAME spec set (same design, independent authorship). Status: Appended.*
+
+### R.A.9 — Environment masking & path-jail detail (from FRAME Ch.5)
+
+**Environment masking.** Before launch, sensitive host variables are stripped unless whitelisted, then merged in order: System base → Workspace `.env` → Ticket `.env` → Manifest `env` → Event payload.
+
+```python
+DENYLIST = {"AWS_SECRET_ACCESS_KEY", "DATABASE_URL", "SSH_AUTH_SOCK", "SUDO_USER"}
+def build_execution_env(ticket_env, manifest_env, payload_env):
+    base = {k: v for k, v in os.environ.items() if k not in DENYLIST}
+    return {**base, **ticket_env, **manifest_env, **payload_env}
+```
+
+**Path jail.** CWD is pinned to the Ticket root; runner sanitizes path args to block `../..` traversal. Writes outside the Ticket/granted workspace are blocked unless declared (Part IX §4.1).
+
+**Secrets.** `secrets: false` (default) means `.env` values are NOT injected; only non-secret env reaches the script. This concretizes Part IX §4.1 `secrets` capability.
