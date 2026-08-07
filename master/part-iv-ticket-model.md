@@ -125,3 +125,95 @@ and `.env` (environment) is the single most important structural decision. It le
 the runtime each read what they need without parsing scripts, and it keeps the source of truth
 (filesystem) cleanly distinguished from derived runtime state. The graph relationship model future-
 proofs the design against workflow/dependency needs that a pure tree cannot express.
+
+---
+
+> **REVISION — Appended from FRAME documentation (Rev A · 2026-08-07).**
+> *Non-destructive: all prior text in this document is unchanged and remains canonical. This block augments it with material drawn from the FRAME spec set (same design, independent authorship). Status: Appended.*
+
+### R.A.4 — Formal schemas & atomic-write protocol (from FRAME Ch.2)
+
+Tessera Part IV describes file responsibilities in prose; FRAME supplies machine-checkable JSON Schemas and the write protocol. Appended for implementers.
+
+**`metadata.json` (JSON Schema v7):**
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TesseraTicketMetadata",
+  "type": "object",
+  "required": ["id", "title", "kind", "created_at", "owner"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$"},
+    "title": {"type": "string"},
+    "kind": {"type": "string", "default": "ticket"},
+    "scope": {"type": "string"},
+    "version": {"type": "string", "default": "1.0.0"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "owner": {"type": "object", "required": ["name", "type"],
+      "properties": {"name": {"type": "string"},
+        "type": {"type": "string", "enum": ["user", "agent", "system"]},
+        "email": {"type": "string"}}},
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "custom": {"type": "object"}
+  }
+}
+```
+
+**`state.json` (JSON Schema v7):**
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TesseraTicketState",
+  "type": "object",
+  "required": ["status", "updated_at", "step"],
+  "properties": {
+    "status": {"type": "string",
+      "enum": ["created","initializing","ready","running","blocked","handoff","completed","failed","archived"]},
+    "step": {"type": "string"},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "assignee": {"type": "object",
+      "properties": {"id": {"type": "string"},
+        "type": {"type": "string", "enum": ["human","agent","service"]},
+        "assigned_at": {"type": "string", "format": "date-time"}}},
+    "relationships": {"type": "object",
+      "properties": {
+        "parent_id": {"type": "string"},
+        "children": {"type": "array", "items": {"type": "object",
+          "required": ["id","path"],
+          "properties": {"id": {"type": "string"}, "path": {"type": "string"}, "status": {"type": "string"}}}},
+        "dependencies": {"type": "array", "items": {"type": "string"}}}},
+    "last_execution": {"type": "object",
+      "properties": {"action": {"type": "string"}, "exit_code": {"type": "integer"},
+        "timestamp": {"type": "string", "format": "date-time"}, "trace_id": {"type": "string"}}},
+    "variables": {"type": "object"}
+  }
+}
+```
+
+**Atomic JSON writes (`state.json`, `metadata.json`).** Direct overwrite is forbidden; use write-temp + `os.replace`:
+
+```python
+import json, os, tempfile
+def atomic_write_json(filepath, data):
+    d = os.path.dirname(filepath)
+    with tempfile.NamedTemporaryFile('w', dir=d, delete=False, encoding='utf-8') as tf:
+        json.dump(data, tf, indent=2)
+        tmp = tf.name
+    os.replace(tmp, filepath)   # POSIX-atomic
+```
+
+**Concurrent log appends (`activity.jsonl`).** Use advisory locking to prevent line interleaving:
+
+```python
+import fcntl, json
+def append_activity_log(path, record):
+    line = json.dumps(record) + "\n"
+    with open(path, 'a', encoding='utf-8') as f:
+        fcntl.flock(f.fileno(), fcntl.LOCK_EX)
+        try:
+            f.write(line); f.flush()
+        finally:
+            fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+```

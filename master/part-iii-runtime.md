@@ -99,3 +99,18 @@ Splitting into focused modules (rather than one script) honors "extensibility ov
 lets each stage evolve. The boot order makes the registry rebuildable and the singleton enforceable,
 which together satisfy Invariants I-2, I-6, I-9. `uv` provides reproducible Python without making
 `venv` responsible for behavior (the original misconception).
+
+---
+
+> **REVISION — Appended from FRAME documentation (Rev A · 2026-08-07).**
+> *Non-destructive: all prior text in this document is unchanged and remains canonical. This block augments it with material drawn from the FRAME spec set (same design, independent authorship). Status: Appended.*
+
+### R.A.3 — Subprocess isolation, timeouts, crash recovery (from FRAME Ch.4 / Ch.5)
+
+**Process-group isolation & timeouts.** Each hook/action runs in a new POSIX process group (`os.setsid`). On `timeout` expiry the runtime sends `SIGTERM` to the group, then `SIGKILL` after 3s if children linger — guaranteeing no orphaned background processes. Augments Part III §4.3 (wiring) and Part VIII retry/timeout.
+
+**Path-jail enforcement.** A script's default CWD is the Ticket root; the runner sanitizes all path arguments to block directory traversal (`../..`). Writes outside the Ticket (or its granted workspace) are blocked unless the manifest declares the permission (Part IX).
+
+**Manifest change detection.** The watcher hashes `MANIFEST.yaml` (SHA-256) during scan; periodic rediscovery re-parses only on hash mismatch, avoiding needless revalidation.
+
+**Crash recovery (orphaned process).** On restart, any Ticket left `Running` whose recorded PID is no longer active is transitioned to `failed` or `ready` per its manifest retry policy, with an `activity.jsonl` audit entry `{"event":"runtime.crash_recovery", ...}`. This motivates the `failed` state proposed in Part VI R.A.6.

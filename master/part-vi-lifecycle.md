@@ -122,3 +122,39 @@ Fixed states give automation a stable vocabulary; flexible transitions respect r
 contract enforceable and testable rather than advisory. Requiring `Archived → Initialized` (never
 directly to `Running`) prevents "zombie" tickets skipping setup. `Completed` having a single exit
 (Archived) keeps terminality meaningful.
+
+---
+
+> **REVISION — Appended from FRAME documentation (Rev A · 2026-08-07).**
+> *Non-destructive: all prior text in this document is unchanged and remains canonical. This block augments it with material drawn from the FRAME spec set (same design, independent authorship). Status: Appended.*
+
+### R.A.6 — `failed` state & crash-recovery transitions (from FRAME Ch.6)
+
+*Augmentation, not replacement:* the canonical eight-state table in §4.2 remains authoritative for v1. FRAME models failure as a first-class state; Tessera currently records failure only as an event (`ticket.action.failed`). Proposed addition:
+
+- **`failed`** — handler exited non-zero or timed out; recoverable via retry or manual reset. Allowed next: `ready`, `initializing`, `archived`.
+
+Appended transition rows (do not alter existing §4.2 rows):
+
+| From | To | Allowed? | Note |
+| --- | --- | --- | --- |
+| Running | failed | ✅ | non-zero exit / timeout |
+| failed | ready | ✅ | retry / manual reset |
+| failed | initializing | ✅ | re-run setup |
+| failed | archived | ✅ | give up |
+
+Crash recovery (Part III R.A.3) drives `Running → failed/ready` on orphaned PID.
+
+```mermaid
+stateDiagram-v2
+    [*] --> created
+    created --> initializing
+    initializing --> ready
+    ready --> running
+    running --> failed
+    running --> completed
+    failed --> ready
+    failed --> initializing
+    completed --> archived
+    archived --> [*]
+```

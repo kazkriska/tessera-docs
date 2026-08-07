@@ -203,3 +203,17 @@ repositories (SkillRepository, WorkflowRepository, MemoryRepository) follow the 
   reference the Master rather than duplicating it.
 
 This Charter may only be amended by explicit, versioned revision. It is the root of all authority.
+
+---
+
+> **REVISION — Appended from FRAME documentation (Rev A · 2026-08-07).**
+> *Non-destructive: all prior text in this document is unchanged and remains canonical. This block augments it with material drawn from the FRAME spec set (same design, independent authorship). Status: Appended.*
+
+### R.A.1 — Corroborating invariants (from FRAME)
+
+The FRAME specification set expresses a compatible invariant set. Two of its invariants have no direct counterpart in Tessera's I-1…I-9 and are recorded here as corroborating guidance for implementers:
+
+- **Idempotency & Debouncing (corroborates I-7 / Part VIII debounce).** Filesystem events are noisy; the runtime MUST debounce rapid file writes and correlate events with a `trace_id` / `parent_event_id` so handlers operate idempotently. Tessera maps this onto Part VIII (Scheduler) debounce and Part VII (Event Bus) notification semantics; no new invariant number is introduced to avoid renumbering.
+- **Subprocess Isolation & Determinism (corroborates I-1 / Part IX).** Hooks and actions execute as isolated subprocesses with explicit timeouts, controlled environment-variable merging, and sandboxed file paths. Tessera maps this onto Part IX (Permissions) capability model and Part III (Runtime) execution; see appended revisions to those Parts.
+
+FRAME's remaining invariants (Single Source of Truth / Disk Locality; Declarative–Imperative Separation; Rebuildability) are already expressed by Tessera I-1, I-2, I-4, I-7, I-9.

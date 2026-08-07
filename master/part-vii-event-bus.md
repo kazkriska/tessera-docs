@@ -86,3 +86,12 @@ bus fans out → Scheduler enqueues `scripts/update_summary.py` (declared under 
 The bus realizes "everything is event-driven" (principle 6) and "extensibility over hardcoding"
 (principle 7): new behavior attaches by subscribing, not by editing central code. Notification-only
 semantics prevent hidden request/response coupling that would make the system untestable.
+
+---
+
+> **REVISION — Appended from FRAME documentation (Rev A · 2026-08-07).**
+> *Non-destructive: all prior text in this document is unchanged and remains canonical. This block augments it with material drawn from the FRAME spec set (same design, independent authorship). Status: Appended.*
+
+### R.A.7 — Event correlation & recursion guard (from FRAME Invariant 5 / Ch.1)
+
+Events carry a `trace_id` and `parent_event_id` for correlation. The runtime tracks event depth; if a handler emits an event that re-triggers itself and depth exceeds a maximum (FRAME default 10), execution halts and an emergency alert is logged to `activity.jsonl`. This realizes idempotency/debouncing at the bus level and prevents infinite execution loops. Complements Part VIII debounce.

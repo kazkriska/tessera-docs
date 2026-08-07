@@ -59,3 +59,18 @@ even as new resource types are added.
 - **Manifests are purely declarative.** Logic lives only in hooks/actions; the manifest describes.
 
 See `foundation/charter.md` §Guiding Principles for the full list.
+## Document Revisions (Appended from FRAME)
+
+*Non-destructive cross-agent synthesis. Original Tessera text is unchanged; below lists augmentations appended as explicit, versioned revisions (Rev A, 2026-08-07).*
+
+| Target document | Appended topic (Rev A) | FRAME source |
+| --- | --- | --- |
+| `foundation/charter.md` | Corroborating invariants (idempotency/debounce, subprocess isolation) | FRAME Ch.0 Invariants |
+| `master/part-ii-architecture.md` | Layer-topology mapping + end-to-end mermaid sequence | FRAME 01 |
+| `master/part-iii-runtime.md` | Process-group timeouts, path-jail, SHA-256 scan, crash recovery | FRAME 04 / 05 |
+| `master/part-iv-ticket-model.md` | JSON-Schema v7 (metadata/state) + atomic-write & flock code | FRAME 02 |
+| `master/part-v-manifest.md` | `watch:` low-level→trigger map, `exports:`, circular-watch guard | FRAME 03 |
+| `master/part-vi-lifecycle.md` | `failed` state + crash-recovery transitions + mermaid | FRAME 06 |
+| `master/part-vii-event-bus.md` | `trace_id` correlation + recursion guard (depth > 10) | FRAME 01 / Invariant 5 |
+| `master/part-viii-scheduler.md` | Priority bands 0–3 + concurrency caps | FRAME 01 / 04 |
+| `master/part-ix-permissions.md` | Env-mask DENYLIST + path-jail + secrets detail | FRAME 05 |
