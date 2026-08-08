@@ -217,3 +217,19 @@ The FRAME specification set expresses a compatible invariant set. Two of its inv
 - **Subprocess Isolation & Determinism (corroborates I-1 / Part IX).** Hooks and actions execute as isolated subprocesses with explicit timeouts, controlled environment-variable merging, and sandboxed file paths. Tessera maps this onto Part IX (Permissions) capability model and Part III (Runtime) execution; see appended revisions to those Parts.
 
 FRAME's remaining invariants (Single Source of Truth / Disk Locality; Declarative–Imperative Separation; Rebuildability) are already expressed by Tessera I-1, I-2, I-4, I-7, I-9.
+
+---
+
+> **REVISION — Layout rename (Rev B · 2026-08-08).**
+> *Non-destructive: prior text unchanged, remains canonical. The package tree moved to a src/ layout: `lib/ticket-management/` → `src/tessera_runtime/`; `tessera/` (SDK) → `src/tessera_sdk/`. Imports: `from tessera import …` → `from tessera_sdk import …`; `ticket_management.cli:main` → `tessera_sdk.cli:main`. Status: Appended.*
+
+### R.B.1 — Affected references in this document
+
+The rows below map canonical text above (left) to its Rev B equivalent (right). The canonical text is **not** rewritten; read it through this table.
+
+| Location (canonical text) | As written (Rev A, canonical) | Rev B equivalent |
+|---|---|---|
+| § Glossary — *FrameworkRoot* | `~/FrameworkRoot/` … contains the repository, skills, and `lib/` | … contains the repository, skills, and `src/` |
+| § Non-Goals | the wider framework (not just ticket-management) | the wider framework (not just the `tessera_runtime` ticket layer) |
+
+No canonical sentence above is amended by this block; tooling that resolves paths or imports MUST apply the mapping table. Rev A text remains the authority on *behaviour*; Rev B is the authority on *location*.

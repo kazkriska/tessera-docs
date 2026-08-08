@@ -93,3 +93,19 @@ execute → lifecycle → permissions) so the system is demonstrable early and t
 wrappers. Explicit deferrals keep v1 scope honest and prevent the "ticket system" from silently
 becoming an unbuildable mega-project. This roadmap is the bridge from the Master Specification to the
 RFC suite (Phase 2), where each RFC versions independently.
+
+---
+
+> **REVISION — Layout rename (Rev B · 2026-08-08).**
+> *Non-destructive: prior text unchanged, remains canonical. The package tree moved to a src/ layout: `lib/ticket-management/` → `src/tessera_runtime/`; `tessera/` (SDK) → `src/tessera_sdk/`. Imports: `from tessera import …` → `from tessera_sdk import …`; `ticket_management.cli:main` → `tessera_sdk.cli:main`. Status: Appended.*
+
+### R.B.1 — Affected references in this document
+
+The rows below map canonical text above (left) to its Rev B equivalent (right). The canonical text is **not** rewritten; read it through this table.
+
+| Location (canonical text) | As written (Rev A, canonical) | Rev B equivalent |
+|---|---|---|
+| § Phase 0 — Scaffold | `FrameworkRoot/` (Tickets/, Skills/, lib/ticket-management/, README) | `FrameworkRoot/` (Tickets/, Skills/, `src/tessera_runtime/`, `src/tessera_sdk/`, README) |
+| § Implementation note | All implementation under `lib/ticket-management/` | All implementation under `src/tessera_runtime/` (SDK/CLI under `src/tessera_sdk/`) |
+
+No canonical sentence above is amended by this block; tooling that resolves paths or imports MUST apply the mapping table. Rev A text remains the authority on *behaviour*; Rev B is the authority on *location*.

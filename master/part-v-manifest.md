@@ -184,3 +184,19 @@ The runtime translates matched low-level events into the named `trigger`, which 
 **Exported variables (`exports:`).** A Ticket may declare output variables it produces (e.g. `task.status`, `task.report_path`) so peers/agents can introspect results without reading scripts.
 
 **Circular-watch guard.** A `watch` rule MUST NOT watch `state.json`/`activity.jsonl` if its target hook writes those files, preventing immediate self-recursion.
+
+---
+
+> **REVISION — Layout rename (Rev B · 2026-08-08).**
+> *Non-destructive: prior text unchanged, remains canonical. The package tree moved to a src/ layout: `lib/ticket-management/` → `src/tessera_runtime/`; `tessera/` (SDK) → `src/tessera_sdk/`. Imports: `from tessera import …` → `from tessera_sdk import …`; `ticket_management.cli:main` → `tessera_sdk.cli:main`. Status: Appended.*
+
+### R.B.1 — Affected references in this document
+
+The rows below map canonical text above (left) to its Rev B equivalent (right). The canonical text is **not** rewritten; read it through this table.
+
+| Location (canonical text) | As written (Rev A, canonical) | Rev B equivalent |
+|---|---|---|
+| § Manifest Loader | `lib/ticket-management/runtime/manifest.py` | `src/tessera_runtime/runtime/manifest.py` |
+| § Manifest Loader | import path `lib.ticket_management.runtime.manifest` | `tessera_runtime.runtime.manifest` |
+
+No canonical sentence above is amended by this block; tooling that resolves paths or imports MUST apply the mapping table. Rev A text remains the authority on *behaviour*; Rev B is the authority on *location*.

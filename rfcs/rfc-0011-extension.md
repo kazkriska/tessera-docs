@@ -42,3 +42,19 @@ framework does not hardcode "ticket" into every subsystem.
 Keeping the framework resource-agnostic from day one avoids the most expensive late change: a rename
 or redesign when new resource types appear. The Ticket remains the fundamental abstraction; other
 resources decompose into Tickets.
+
+---
+
+> **REVISION — Layout rename (Rev B · 2026-08-08).**
+> *Non-destructive: prior text unchanged, remains canonical. The package tree moved to a src/ layout: `lib/ticket-management/` → `src/tessera_runtime/`; `tessera/` (SDK) → `src/tessera_sdk/`. Imports: `from tessera import …` → `from tessera_sdk import …`; `ticket_management.cli:main` → `tessera_sdk.cli:main`. Status: Appended.*
+
+### R.B.1 — Affected references in this document
+
+The rows below map canonical text above (left) to its Rev B equivalent (right). The canonical text is **not** rewritten; read it through this table.
+
+| Location (canonical text) | As written (Rev A, canonical) | Rev B equivalent |
+|---|---|---|
+| § Substrate tree | `FrameworkRoot/ … └── lib/  (shared substrate)` | `└── src/  (shared substrate)` |
+| § Substrate tree | ticket layer under `lib/ticket-management/` | `src/tessera_runtime/` |
+
+No canonical sentence above is amended by this block; tooling that resolves paths or imports MUST apply the mapping table. Rev A text remains the authority on *behaviour*; Rev B is the authority on *location*.

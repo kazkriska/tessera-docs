@@ -49,3 +49,19 @@ contract is specified — deferred per Charter Non-Goals).
 Defining the SDK alongside the CLI turns "functions the CLI uses" into a stable contract. A socket-
 based, language-agnostic transport lets future runtimes and external tools integrate without forking
 the runtime — serving the multi-runtime vision.
+
+---
+
+> **REVISION — Layout rename (Rev B · 2026-08-08).**
+> *Non-destructive: prior text unchanged, remains canonical. The package tree moved to a src/ layout: `lib/ticket-management/` → `src/tessera_runtime/`; `tessera/` (SDK) → `src/tessera_sdk/`. Imports: `from tessera import …` → `from tessera_sdk import …`; `ticket_management.cli:main` → `tessera_sdk.cli:main`. Status: Appended.*
+
+### R.B.1 — Affected references in this document
+
+The rows below map canonical text above (left) to its Rev B equivalent (right). The canonical text is **not** rewritten; read it through this table.
+
+| Location (canonical text) | As written (Rev A, canonical) | Rev B equivalent |
+|---|---|---|
+| § Usage example | `from tessera import Runtime` | `from tessera_sdk import Runtime` |
+| § Packaging | SDK package `tessera/` | `src/tessera_sdk/` |
+
+No canonical sentence above is amended by this block; tooling that resolves paths or imports MUST apply the mapping table. Rev A text remains the authority on *behaviour*; Rev B is the authority on *location*.

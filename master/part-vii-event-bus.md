@@ -95,3 +95,18 @@ semantics prevent hidden request/response coupling that would make the system un
 ### R.A.7 — Event correlation & recursion guard (from FRAME Invariant 5 / Ch.1)
 
 Events carry a `trace_id` and `parent_event_id` for correlation. The runtime tracks event depth; if a handler emits an event that re-triggers itself and depth exceeds a maximum (FRAME default 10), execution halts and an emergency alert is logged to `activity.jsonl`. This realizes idempotency/debouncing at the bus level and prevents infinite execution loops. Complements Part VIII debounce.
+
+---
+
+> **REVISION — Layout rename (Rev B · 2026-08-08).**
+> *Non-destructive: prior text unchanged, remains canonical. The package tree moved to a src/ layout: `lib/ticket-management/` → `src/tessera_runtime/`; `tessera/` (SDK) → `src/tessera_sdk/`. Imports: `from tessera import …` → `from tessera_sdk import …`; `ticket_management.cli:main` → `tessera_sdk.cli:main`. Status: Appended.*
+
+### R.B.1 — Affected references in this document
+
+The rows below map canonical text above (left) to its Rev B equivalent (right). The canonical text is **not** rewritten; read it through this table.
+
+| Location (canonical text) | As written (Rev A, canonical) | Rev B equivalent |
+|---|---|---|
+| § 2 — Scope | scope events to the repository and `lib/ticket-management/` | … and `src/tessera_runtime/` |
+
+No canonical sentence above is amended by this block; tooling that resolves paths or imports MUST apply the mapping table. Rev A text remains the authority on *behaviour*; Rev B is the authority on *location*.

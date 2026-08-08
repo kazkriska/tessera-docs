@@ -37,3 +37,19 @@ rejected with reason. Permission denied → shown + recorded.
 A small, predictable CLI built directly on runtime functions keeps the human interface consistent with
 the SDK and avoids a second behavior implementation. Defining it in v1 gives operators a way to drive
 and debug immediately.
+
+---
+
+> **REVISION — Layout rename (Rev B · 2026-08-08).**
+> *Non-destructive: prior text unchanged, remains canonical. The package tree moved to a src/ layout: `lib/ticket-management/` → `src/tessera_runtime/`; `tessera/` (SDK) → `src/tessera_sdk/`. Imports: `from tessera import …` → `from tessera_sdk import …`; `ticket_management.cli:main` → `tessera_sdk.cli:main`. Status: Appended.*
+
+### R.B.1 — Affected references in this document
+
+The rows below map canonical text above (left) to its Rev B equivalent (right). The canonical text is **not** rewritten; read it through this table.
+
+| Location (canonical text) | As written (Rev A, canonical) | Rev B equivalent |
+|---|---|---|
+| § Summary | Typer app in `cli.py` (under `lib/ticket-management/`) | `src/tessera_sdk/cli.py` |
+| § Packaging / console script | `ticket_management.cli:main` | `tessera_sdk.cli:main` |
+
+No canonical sentence above is amended by this block; tooling that resolves paths or imports MUST apply the mapping table. Rev A text remains the authority on *behaviour*; Rev B is the authority on *location*.

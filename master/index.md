@@ -109,3 +109,21 @@ Charter → Master index → Part II (Architecture) → Part IV (Ticket Model) �
 Part VI (Lifecycle) → Part III/VII/VIII (Runtime, Event Bus, Scheduler) → Part IX–XI (Permissions,
 CLI, SDK) → Part XII (Roadmap). Parts III/VII/VIII may be read together since they form the
 execution pipeline.
+
+---
+
+> **REVISION — Layout rename (Rev B · 2026-08-08).**
+> *Non-destructive: prior text unchanged, remains canonical. The package tree moved to a src/ layout: `lib/ticket-management/` → `src/tessera_runtime/`; `tessera/` (SDK) → `src/tessera_sdk/`. Imports: `from tessera import …` → `from tessera_sdk import …`; `ticket_management.cli:main` → `tessera_sdk.cli:main`. Status: Appended.*
+
+### R.B.1 — Affected references in this document
+
+The rows below map canonical text above (left) to its Rev B equivalent (right). The canonical text is **not** rewritten; read it through this table.
+
+| Location (canonical text) | As written (Rev A, canonical) | Rev B equivalent |
+|---|---|---|
+| § Conventions / repository tree | `lib/` | `src/` |
+| § Repository tree | `lib/ticket-management/` — the runtime implementation | `src/tessera_runtime/` — the runtime implementation |
+| § Repository tree | SDK package `tessera/` | `src/tessera_sdk/` |
+| § Repository tree | `lib/ticket-management/pyproject.toml` | `pyproject.toml` at FrameworkRoot, packaging `src/tessera_runtime` + `src/tessera_sdk` |
+
+No canonical sentence above is amended by this block; tooling that resolves paths or imports MUST apply the mapping table. Rev A text remains the authority on *behaviour*; Rev B is the authority on *location*.

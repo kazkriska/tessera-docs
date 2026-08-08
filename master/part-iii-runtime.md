@@ -114,3 +114,20 @@ which together satisfy Invariants I-2, I-6, I-9. `uv` provides reproducible Pyth
 **Manifest change detection.** The watcher hashes `MANIFEST.yaml` (SHA-256) during scan; periodic rediscovery re-parses only on hash mismatch, avoiding needless revalidation.
 
 **Crash recovery (orphaned process).** On restart, any Ticket left `Running` whose recorded PID is no longer active is transitioned to `failed` or `ready` per its manifest retry policy, with an `activity.jsonl` audit entry `{"event":"runtime.crash_recovery", ...}`. This motivates the `failed` state proposed in Part VI R.A.6.
+
+---
+
+> **REVISION — Layout rename (Rev B · 2026-08-08).**
+> *Non-destructive: prior text unchanged, remains canonical. The package tree moved to a src/ layout: `lib/ticket-management/` → `src/tessera_runtime/`; `tessera/` (SDK) → `src/tessera_sdk/`. Imports: `from tessera import …` → `from tessera_sdk import …`; `ticket_management.cli:main` → `tessera_sdk.cli:main`. Status: Appended.*
+
+### R.B.1 — Affected references in this document
+
+The rows below map canonical text above (left) to its Rev B equivalent (right). The canonical text is **not** rewritten; read it through this table.
+
+| Location (canonical text) | As written (Rev A, canonical) | Rev B equivalent |
+|---|---|---|
+| § 4.1 — Module layout | `lib/ticket-management/` | `src/tessera_runtime/` |
+| § 4.1 — Module layout | module imports `lib.ticket_management.*` | `tessera_runtime.*` |
+| § 10 — Alternatives (Rust/Go runtime) | replace `lib/ticket-management/` internals | replace `src/tessera_runtime/` internals |
+
+No canonical sentence above is amended by this block; tooling that resolves paths or imports MUST apply the mapping table. Rev A text remains the authority on *behaviour*; Rev B is the authority on *location*.
