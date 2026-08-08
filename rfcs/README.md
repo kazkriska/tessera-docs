@@ -28,6 +28,7 @@ page 97 of a monolith.
 | RFC-0010 | SDK Architecture | Master Part XI |
 | RFC-0011 | Extension System & Future Runtimes | Charter §8, Master Part XII §10 |
 | RFC-0012 | Implementation Roadmap | Master Part XII |
+| RFC-0013 | Distribution & Installation | Phase 2 — RFCs (authoritative distribution spec) |
 
 ## Conventions
 - Each RFC carries: `Status`, `Version`, `Summary`, normative sections, and `References` (Master Part

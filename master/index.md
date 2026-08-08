@@ -110,6 +110,33 @@ Part VI (Lifecycle) → Part III/VII/VIII (Runtime, Event Bus, Scheduler) → Pa
 CLI, SDK) → Part XII (Roadmap). Parts III/VII/VIII may be read together since they form the
 execution pipeline.
 
+## Document map
+
+| Document | Subject | Phase |
+| --- | --- | --- |
+| `foundation/charter.md` | Charter (Phase 0) | Phase 0 |
+| `master/index.md` | Master Specification (this document) | Phase 1 |
+| `master/part-i-vision.md` … `master/part-xii-roadmap.md` | Master Parts I–XII | Phase 1 |
+| `rfcs/README.md` | RFC Suite Index | Phase 2 — RFCs |
+| `rfcs/rfc-0000-philosophy.md` | RFC-0000 — Philosophy & Guiding Principles | Phase 2 — RFCs |
+| `rfcs/rfc-0001-architecture.md` | RFC-0001 — Architecture & Component Pipeline | Phase 2 — RFCs |
+| `rfcs/rfc-0002-ticket-model.md` | RFC-0002 — Ticket Model & Resource Abstraction | Phase 2 — RFCs |
+| `rfcs/rfc-0003-manifest.md` | RFC-0003 — Manifest Specification (v1) | Phase 2 — RFCs |
+| `rfcs/rfc-0004-runtime.md` | RFC-0004 — Runtime Internals | Phase 2 — RFCs |
+| `rfcs/rfc-0005-event-bus.md` | RFC-0005 — Event Bus | Phase 2 — RFCs |
+| `rfcs/rfc-0006-scheduler.md` | RFC-0006 — Scheduler, Queues & Locking | Phase 2 — RFCs |
+| `rfcs/rfc-0007-lifecycle.md` | RFC-0007 — Ticket Lifecycle & State Machine | Phase 2 — RFCs |
+| `rfcs/rfc-0008-permissions.md` | RFC-0008 — Permissions & Security Model | Phase 2 — RFCs |
+| `rfcs/rfc-0009-cli.md` | RFC-0009 — Command-Line Interface | Phase 2 — RFCs |
+| `rfcs/rfc-0010-sdk.md` | RFC-0010 — SDK Architecture | Phase 2 — RFCs |
+| `rfcs/rfc-0011-extension.md` | RFC-0011 — Extension System & Future Runtimes | Phase 2 — RFCs |
+| `rfcs/rfc-0012-roadmap.md` | RFC-0012 — Implementation Roadmap | Phase 2 — RFCs |
+| `rfcs/rfc-0013-distribution.md` | RFC-0013 — Distribution & Installation | Phase 2 — RFCs |
+
+> **RFC-0013 is the authoritative distribution & installation spec** for Tessera v1 (tarball-based
+> installer, `curl … | bash` bootstrap, user-scoped systemd install). Where any other document
+> disagrees on distribution/installation behavior, RFC-0013 takes precedence.
+
 ---
 
 > **REVISION — Layout rename (Rev B · 2026-08-08).**
@@ -127,3 +154,13 @@ The rows below map canonical text above (left) to its Rev B equivalent (right). 
 | § Repository tree | `lib/ticket-management/pyproject.toml` | `pyproject.toml` at FrameworkRoot, packaging `src/tessera_runtime` + `src/tessera_sdk` |
 
 No canonical sentence above is amended by this block; tooling that resolves paths or imports MUST apply the mapping table. Rev A text remains the authority on *behaviour*; Rev B is the authority on *location*.
+
+---
+
+## Document Revisions
+
+| Rev | Date | Note |
+| --- | --- | --- |
+| A | (initial) | Master Specification published (Phase 1). |
+| B | 2026-08-08 | Layout rename: `lib/ticket-management/` → `src/tessera_runtime/`; `tessera/` → `src/tessera_sdk/`. |
+| C | 2026-08-08 | Added RFC-0013 — Distribution & Installation as the **authoritative distribution spec** (tarball-based installer, `curl … | bash` bootstrap, user-scoped systemd install); added the Document map table referencing it. |
